@@ -124,20 +124,20 @@ class loginpage(View):
         if request.user.is_authenticated:
             messages.warning(request, "You are already logged in")
             return redirect('/')
-        name = request.POST.get('username')
-        passwd = request.POST.get('password')
-        user = authenticate(request, username=name, password=passwd)
-        
-        if user is not None:
-            login(request, user)
-            messages.success(request, "Logged in Successfully")
-            prods = MenClothing.objects.all()
-            bannerimage = BannerImage.objects.all()
-            return render(request, 'index.html', {'prods': prods, 'bannerimage': bannerimage})
         else:
-            messages.error(request, "Invalid Username or Password")
-            return redirect('loginpage') 
-        
+            name = request.POST.get('username')
+            passwd = request.POST.get('password')
+            user = authenticate(request, username=name, password=passwd)
+            
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Logged in Successfully")
+                prods = MenClothing.objects.all()
+                bannerimage = BannerImage.objects.all()
+                return render(request, 'index.html', {'prods': prods, 'bannerimage': bannerimage})
+            else:
+                messages.error(request, "Invalid Username or Password")
+                return redirect('loginpage') 
         
      
 # logout button for the user

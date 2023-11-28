@@ -70,10 +70,10 @@
                             <i class="fa fa-bars"></i> All category
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'tshirt_category' %}">Tshirt</a>
-                            <a class="dropdown-item" href="{% url 'shirt_category' %}">Shirt</a>
-                            <a class="dropdown-item" href="{% url 'jeans_category' %}">Jeans</a>
-                            <a class="dropdown-item" href="{% url 'jacket_category' %}">Jacket</a>
+                            <li><a class="dropdown-item" href="{% url 'category-view' category_name='t-shirt' %}">Tshirt</a></li>
+                            <li><a class="dropdown-item" href="{% url 'category-view' category_name='shirt' %}">Shirt</a></li>
+                            <li><a class="dropdown-item" href="{% url 'category-view' category_name='jeans' %}">Jeans</a></li>
+                            <li><a class="dropdown-item" href="{% url 'category-view' category_name='jacket' %}">Jacket</a></li>
                         </div>
                     </div> 
                 </div>

@@ -24,6 +24,10 @@
 <!-- custom style -->
 <link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
 <link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+
+<!-- jQuery css for search product -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <!-- Alertify CSS -->
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
@@ -69,26 +73,27 @@ $(document).ready(function() {
 				<i class="fa fa-bars"></i> All category 
 			</button>
 			<div class="dropdown-menu">
-				<a class="dropdown-item" href="{% url 'tshirt_category' %}">Tshirt</a>
-				<a class="dropdown-item" href="{% url 'shirt_category' %}">Shirt</a>
-				<a class="dropdown-item" href="{% url 'jeans_category' %}">Jeans</a>
-				<a class="dropdown-item" href="{% url 'jacket_category' %}">Jacket</a>
+				<li><a class="dropdown-item" href="{% url 'category-view' category_name='t-shirt' %}">Tshirt</a></li>
+				<li><a class="dropdown-item" href="{% url 'category-view' category_name='shirt' %}">Shirt</a></li>
+				<li><a class="dropdown-item" href="{% url 'category-view' category_name='jeans' %}">Jeans</a></li>
+				<li><a class="dropdown-item" href="{% url 'category-view' category_name='jacket' %}">Jacket</a></li>
 			</div>
 		</div>  <!-- category-wrap.// -->
 	</div> <!-- col.// -->
 	<a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
 	<div class="col-lg  col-md-6 col-sm-12 col">
-		<form action="#" class="search">
-			<div class="input-group w-100">
-			    <input type="text" class="form-control" style="width:60%;" placeholder="Search">
-			    
-			    <div class="input-group-append">
-			      <button class="btn btn-primary" type="submit">
-			        <i class="fa fa-search"></i>
-			      </button>
-			    </div>
-		    </div>
-		</form> <!-- search-wrap .end// -->
+		<form action="{% url 'searchproduct' %}" class="search" method="POST">
+			{% csrf_token %}
+			  <div class="input-group w-100">
+				  <input type="search" required class="form-control" style="width:60%;" id="searchproduct" name="productsearch" placeholder="Search Product">
+
+				  <div class="input-group-append">
+					  <button class="btn btn-primary" type="submit">
+						  <i class="fa fa-search"></i>
+					  </button>
+				  </div>
+			  </div>
+		  </form> <!-- search-wrap .end// -->
 	</div> <!-- col.// -->
 	<div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
 				<div class="d-flex justify-content-end mb-3 mb-lg-0">
@@ -136,8 +141,8 @@ $(document).ready(function() {
 <thead class="text-muted">
 <tr class="small text-uppercase">
   <th scope="col">Product</th>
-  <th scope="col" width="120"></th>
-  <th scope="col" width="120">Price</th>
+  <th scope="col" width="120">Product View</th>
+  <th scope="col" width="120">Unit Price</th>
   <th scope="col" class="text-right" width="200"> </th>
 </tr>
 </thead>
@@ -182,13 +187,47 @@ $(document).ready(function() {
 </tbody>
 </table>
 </div> <!-- card.// -->
-</div> <!-- row.// -->
-<!-- ============================ COMPONENT 1 END .// ================================= -->
+
+</aside> <!-- col.// -->
+<aside class="col-lg-3">
+
+	<div class="card">
+	<div class="card-body">
+		<a href="{% url 'index' %}" class="btn btn-light btn-block">Continue Shopping</a>
+	</div> <!-- card-body.// -->
+	</div> <!-- card.// -->
+
+</aside> 
+</div> <!--row-->
+ <!-- ============================ COMPONENT 1 END .// ================================= -->
 
 </div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
-<script src="{% static '/js/jquery-3.7.1.min.js' %}"></script>
+<!-- jQuery for search product -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<script>
+var availableTags = [];
+
+$.ajax({
+  method: "GET",
+  url: "/product-list",
+  success: function (response) {
+    startAutocomplete(response);
+  }
+});
+
+function startAutocomplete(availableTags)
+{
+  $( "#searchproduct" ).autocomplete({
+    source: availableTags
+  });
+
+}
+
+</script>
+<!-- <script src="{% static '/js/jquery-3.7.1.min.js' %}"></script> -->
 <script src="{% static '/js/custom.js' %}"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 <script>

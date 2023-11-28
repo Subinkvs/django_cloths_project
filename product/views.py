@@ -300,12 +300,20 @@ class productlist(View):
     
     
 class searchproduct(View):
-    def post(self, request, *args, **kwargs):
+    
+    def post(self, request):
         searchedterm = request.POST.get('productsearch')
+        
         if searchedterm == "":
             return redirect(request.META.get('HTTP_REFERER'))
         else:
             product = MenClothing.objects.filter(name__contains=searchedterm).first()
             if product:
-                return redirect('category/')
-        
+                return redirect('product/' + str(product.id))
+            else:
+                messages.info(request, "No product matched your search")
+                return redirect(request.META.get('HTTP_REFERER'))
+
+    def get(self, request):
+        # Handle GET requests if needed
+        return redirect(request.META.get('HTTP_REFERER'))

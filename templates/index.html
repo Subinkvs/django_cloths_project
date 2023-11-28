@@ -86,9 +86,10 @@
                   </div> <!-- col.// -->
                   <!-- <a href="./store.html" class="btn btn-outline-primary">Store</a> -->
                   <div class="col-lg col-md-6 col-sm-12 col">
-                      <form action="#" class="search">
+                      <form action="{% url 'searchproduct' %}" class="search" method="POST">
+                        {% csrf_token %}
                           <div class="input-group w-100">
-                              <input type="text" class="form-control" style="width:60%;" id="searchproduct" placeholder="Search Product">
+                              <input type="search" required class="form-control" style="width:60%;" id="searchproduct" name="productsearch" placeholder="Search Product">
   
                               <div class="input-group-append">
                                   <button class="btn btn-primary" type="submit">
