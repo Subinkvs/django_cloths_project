@@ -18,6 +18,8 @@ urlpatterns = [
     path('delete-wishlist-item', deletewishlistitem.as_view(), name='deletewishlistitem'),
     path('checkoutpage', checkoutpage.as_view(), name='checkoutpage'), 
     path('place-order', placeorder.as_view(), name='placeorder'),
+    path('proceed-to-pay',razorpaycheck.as_view() ),
+    path('my-orders', order.as_view(), name='my-orders'),
     path('store', store.as_view(), name='store')
 
 ]

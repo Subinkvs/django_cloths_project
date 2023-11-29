@@ -164,45 +164,48 @@ $(document).ready(function() {
 <div class="card-body">
 	<h4 class="card-title mb-4">Basic Details</h4>
 	<hr>
-
+<!-- checkout form -->
+<form action="{% url 'placeorder' %}" method="POST">
+       {% csrf_token %}
 		<div class="row">
 			<div class="form-group col-sm-6">
 				<label>First name</label>
-				<input type="text" value="{{request.user.first_name}}"class="form-control" required name="firstname" placeholder="Enter first name">
+				<input type="text" value="{{request.user.first_name}}" required class="form-control" name="firstname" placeholder="Enter first name">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Last name</label>
-				<input type="text" value="{{request.user.last_name}}" class="form-control" required name="lastname" placeholder="Enter Last name">
+				<input type="text" value="{{request.user.last_name}}" required  class="form-control"  name="lastname" placeholder="Enter Last name">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Email</label>
-				<input type="email" value="{{request.user.email}}" class="form-control" required  name="email" placeholder="example@gmail.com">
+				<input type="email" value="{{request.user.email}}" required class="form-control"   name="email" placeholder="example@gmail.com">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Phone</label>
-				<input type="text" value="{{request.user.phonenumber}}"  class="form-control" required name="phone" placeholder="Enter phone number">
+				<input type="text" value="{{request.user.phonenumber}}" required  class="form-control"  name="phone" placeholder="Enter phone number">
 			</div>
 			<div class="form-group col-12">
 				<label>Address</label>
-				<textarea type="text" class="form-control" required  name="address" placeholder="Enter address"  style="height: 100px;">{{userprofile.address}}</textarea>
+				<textarea type="text"required  class="form-control" required  name="address" placeholder="Enter address"  style="height: 100px;">{{userprofile.address}}</textarea>
 			</div>
 			<div class="form-group col-sm-6">
 				<label>City</label>
-				<input type="text" value="{{userprofile.city}}" class="form-control" required name="city" placeholder="Enter City name">
+				<input type="text" value="{{userprofile.city}}" required  class="form-control"  name="city" placeholder="Enter City name">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>State</label>
-				<input type="text" value="{{userprofile.state}}" class="form-control" required name="state" placeholder="Enter State name">
+				<input type="text" value="{{userprofile.state}}" required  class="form-control"  name="state" placeholder="Enter State name">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Country</label>
-				<input type="text" value="{{userprofile.country}}"  class="form-control" required name="country" placeholder="Enter Country name">
+				<input type="text" value="{{userprofile.country}}" required  class="form-control"  name="country" placeholder="Enter Country name">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Pin Code</label>
-				<input type="text" value="{{userprofile.pincode}}" class="form-control" required name="pincode" placeholder="Enter Pin Code">
+				<input type="text" value="{{userprofile.pincode}}" required  class="form-control"  name="pincode" placeholder="Enter Pin Code">
 			</div>
 		</div> <!-- row.// -->	
+</form>
 <article class="accordion" id="accordion_pay">
 	<div class="card">
 		<header class="card-header">
@@ -262,7 +265,8 @@ $(document).ready(function() {
 				<img src="{% static './images/misc/payments.png' %}" height="26">
 			</p>
 			<input type="hidden" value="COD" name="payment_mode">
-			<button class="btn btn-primary btn-block" type="submit"> COD | Place Order </button>
+			<button class="btn btn-success btn-block" type="submit"> COD | Place Order </button>
+			<button class="btn btn-primary btn-block mt-2 paywithrazorpay" type="button"> Pay with Razorpay </button>
 			
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
@@ -301,7 +305,12 @@ function startAutocomplete(availableTags)
 }
 
 </script>
-
+<!-- razorpay payment -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- razorpay checkout form -->
+<script src="{% static 'js/checkout.js' %}"></script>
+<!-- sweetalert notify -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- jQuery for alertify messages -->
 <script src="{% static '/js/custom.js' %}"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>

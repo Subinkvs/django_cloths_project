@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponse
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
@@ -20,11 +20,13 @@ class home(View):
         bannerimage = BannerImage.objects.all()
         cartitem = Cart.objects.filter(user=self.request.user.id)
         total_quantity = sum(item.product_qty for item in cartitem)
+        
         context = {
             'prods': prods,
             'bannerimage': bannerimage,
             'cartitem': cartitem,
             'total_quantity': total_quantity,
+            
         }
 
         return context
@@ -149,7 +151,8 @@ class wishlist(View):
             cartitem = Cart.objects.filter(user=request.user.id)
             total_quantity = sum(item.product_qty for item in cartitem)
             wishlist = Wishlist.objects.filter(user=request.user.id)
-            context = {'wishlist': wishlist, 'total_quantity': total_quantity}
+            total_item =len(wishlist)
+            context = {'wishlist': wishlist, 'total_quantity': total_quantity,'total_item':total_item}
             return render(request, 'wishlist.html', context)
         else:
             return redirect('loginpage')
@@ -241,8 +244,9 @@ class placeorder(View):
         neworder.state = request.POST.get('state')
         neworder.country = request.POST.get('country')
         neworder.pincode = request.POST.get('pincode')
-        neworder.payment_mode = request.POST.get('payment_mode')
         
+        neworder.payment_mode = request.POST.get('payment_mode')
+        neworder.payment_id = request.POST.get('payment_id')
         cart = Cart.objects.filter(user=request.user)
         cart_total_price = sum(item.product.price * item.product_qty for item in cart)
         
@@ -269,6 +273,10 @@ class placeorder(View):
         
         Cart.objects.filter(user=request.user).delete()
         messages.success(request, "Your Order has be placed successfully")
+        
+        payMode = request.POST.get('payment_mode')
+        if(payMode == "Paid by Razorpay"):
+            return JsonResponse({'status': "Your Order has be placed successfully"})
         return redirect('index')
   
     
@@ -291,14 +299,17 @@ class store(View):
         
         context = {'prods': prods, 'page': page, 'category': category, 'total_quantity': total_quantity}
         return render(request, 'store.html', context)
+ 
   
+#  To list product in the searchbar  
 class productlist(View):
     def get(self, request, *args, **kwargs):
         products = MenClothing.objects.filter(is_featured=True).values_list('name', flat=True)
         productList = list(products)
         return JsonResponse(productList, safe=False)
+
     
-    
+# To search product from the search bar   
 class searchproduct(View):
     
     def post(self, request):
@@ -317,3 +328,19 @@ class searchproduct(View):
     def get(self, request):
         # Handle GET requests if needed
         return redirect(request.META.get('HTTP_REFERER'))
+    
+class razorpaycheck(View):
+    
+    def get(self,request,*args, **kwargs):
+        cart = Cart.objects.filter(user=request.user)
+        total_price = 0
+        for item in cart:
+            total_price = total_price + item.product.price * item.product_qty
+        
+        return JsonResponse({
+            'total_price':total_price
+        })
+    
+class order(View):
+    def get(self,request,*args, **kwargs):
+        return HttpResponse("My Orders page")
