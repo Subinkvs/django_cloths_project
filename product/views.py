@@ -59,7 +59,6 @@ class productdetail(View):
 # To get the category page separatly
 class CategoryView(View):
     template_name = 'category.html'
-
     def get_context_data(self, category_name):
         predefined_categories = ['T-shirt','Shirt','Jacket','Jeans']
         if category_name:
@@ -78,13 +77,15 @@ class CategoryView(View):
         }
 
         return context
-
+    '''To get the category page separatly'''
+    
     def get(self, request, category_name=None):
         context = self.get_context_data(category_name)
         return render(request, self.template_name, context)
  
 # To add product to the cart
 class addtocart(View):
+    '''Add product to the cart'''
     def post(self, request):
         if request.user.is_authenticated:
             prod_id = int(request.POST.get('product_id'))
@@ -104,13 +105,14 @@ class addtocart(View):
             else:
                 return JsonResponse({'status': 'No such product found'})
         else:
-            return JsonResponse({'status': 'Login to Continue'})
+            return JsonResponse({'status': 'Please Login to Continue'})
 
     def get(self, request):
         return redirect('index')
 
-# cart page
+#To view cart page
 class cart(View):
+    '''To view cart page'''
     def get(self, request):
         if request.user.is_authenticated:
             cartitem = Cart.objects.filter(user=request.user.id).order_by('-created_at')
@@ -124,6 +126,7 @@ class cart(View):
          
 # To update the product quantity in the cart
 class updatecart(View):
+    '''To update the product quantity in the cart'''
     def post(self, request):
         prod_id = int(request.POST.get('product_id'))
         if Cart.objects.filter(user=request.user.id, product_id=prod_id).exists():
@@ -136,6 +139,7 @@ class updatecart(View):
 
 # To delete the product added in the cart
 class deletecartitem(View):
+    '''To delete the product added in the cart'''
     def post(self, request):
         prod_id = int(request.POST.get('product_id'))
         if Cart.objects.filter(user=request.user, product_id=prod_id).exists():
@@ -144,11 +148,12 @@ class deletecartitem(View):
             return JsonResponse({'status': 'Deleted Successfully'})
         return redirect('index')
 
-# Wishlist page
+# To view the Wishlist page
 class wishlist(View):
+    ''' To view the Wishlist page'''
     def get(self, request):
         if request.user.is_authenticated:
-            cartitem = Cart.objects.filter(user=request.user.id)
+            cartitem = Cart.objects.filter(user=self.request.user.id)
             total_quantity = sum(item.product_qty for item in cartitem)
             wishlist = Wishlist.objects.filter(user=request.user.id)
             total_item =len(wishlist)
@@ -157,8 +162,9 @@ class wishlist(View):
         else:
             return redirect('loginpage')
 
-# To add product to the wishlist
+# To add the product to the wishlist
 class addtowishlist(View):
+    '''To add the product to the wishlist'''
     def post(self, request):
         if request.user.is_authenticated:
             prod_id = int(request.POST.get('product_id'))
@@ -172,13 +178,14 @@ class addtowishlist(View):
             else:
                 return JsonResponse({'status': 'No such product found'})
         else:
-            return JsonResponse({'status': 'Login to continue'})
+            return JsonResponse({'status': 'Please Login to continue'})
         
    
         
 
-# To delete product from the wishlist
+# To delete product from the deletewishlistitem
 class deletewishlistitem(View):
+    '''To add the product to cart'''
     def post(self, request):
         if request.user.is_authenticated:
             prod_id = int(request.POST.get('product_id'))
@@ -189,13 +196,14 @@ class deletewishlistitem(View):
             else:
                 return JsonResponse({'status': 'Product not found in wishlist'})
         else:
-            return JsonResponse({'status': 'Login to continue'})
+            return JsonResponse({'status': 'Please Login to continue'})
         
     def get(self, request):
         return redirect('index')
 
-# checkout page
+# To view checkout page
 class checkoutpage(View):
+    ''' To view checkout page'''
     def get(self, request):
         rawcart = Cart.objects.filter(user=request.user)
         total_quantity = sum(item.product_qty for item in rawcart)
@@ -215,6 +223,7 @@ class checkoutpage(View):
 
 # To placeorder a product
 class placeorder(View):
+    '''To placeorder a product'''
     def post(self, request):
         currentuser = User.objects.filter(id=request.user.id).first()
         
@@ -282,6 +291,7 @@ class placeorder(View):
     
 # To see all products using pagination
 class store(View):
+    '''To see all products using pagination'''
     def get(self, request):
         prods = MenClothing.objects.filter(is_featured=True).order_by('image')
         cartitem = Cart.objects.filter(user=request.user.id)
@@ -303,6 +313,7 @@ class store(View):
   
 #  To list product in the searchbar  
 class productlist(View):
+    ''' To list product in the searchbar '''
     def get(self, request, *args, **kwargs):
         products = MenClothing.objects.filter(is_featured=True).values_list('name', flat=True)
         productList = list(products)
@@ -311,7 +322,7 @@ class productlist(View):
     
 # To search product from the search bar   
 class searchproduct(View):
-    
+    '''To search product from the search bar '''
     def post(self, request):
         searchedterm = request.POST.get('productsearch')
         
@@ -329,8 +340,9 @@ class searchproduct(View):
         # Handle GET requests if needed
         return redirect(request.META.get('HTTP_REFERER'))
     
+# To add Razorpaycheck payment    
 class razorpaycheck(View):
-    
+    '''To add Razorpaycheck payment '''
     def get(self,request,*args, **kwargs):
         cart = Cart.objects.filter(user=request.user)
         total_price = 0
@@ -340,7 +352,13 @@ class razorpaycheck(View):
         return JsonResponse({
             'total_price':total_price
         })
-    
+
+# To add order complete       
 class order(View):
+    '''To add order complete '''
     def get(self,request,*args, **kwargs):
-        return HttpResponse("My Orders page")
+        orders = Order.objects.filter(user=request.user)
+        context = {
+            'orders':orders
+        }
+        return render(request,'order_complete.html', context)

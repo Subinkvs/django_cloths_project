@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from accounts.forms import  CustomUserForm
 from django.contrib import messages
 from django.contrib.auth import  authenticate, login, logout, get_user_model
-from product.models import MenClothing,BannerImage,Category,Cart
+from product.models import MenClothing,BannerImage,Cart
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -18,6 +18,7 @@ from product.models import BannerImage
  
 # To activate a new user account using email confirmation
 class activate(View):
+    '''To activate a new user account using email confirmation '''
     def get(self, request, uidb64, token):
         User = get_user_model()
         try:
@@ -37,6 +38,7 @@ class activate(View):
 
 # To verify a new user account after user register with email confirmation
 class activateEmail(View):
+    '''To verify a new user account after user register with email confirmation '''
     def send_activation_email(self, request, user, to_email):
         mail_subject = "Activate your user account."
 
@@ -65,7 +67,7 @@ class activateEmail(View):
 # To render the landing page of the project
 class home(View):
     template_name = 'index.html'
-
+    '''To render the landing page of the project '''
     def get_context_data(self):
         prods = MenClothing.objects.filter(is_featured=True)
         bannerimage = BannerImage.objects.all()
@@ -90,7 +92,7 @@ class home(View):
 # signup page for user registeration with validation
 class signuppage(View):
     template_name = 'register.html'
-
+    '''signup page for user registeration with validation'''
     def get(self, request):
         form = CustomUserForm()
         context = {'form': form}
@@ -113,7 +115,7 @@ class signuppage(View):
 # loginpage for the user     
 class loginpage(View):
     template_name = 'signin.html'
-
+    '''loginpage for the user '''
     def get(self, request):
         if request.user.is_authenticated:
             messages.warning(request, "You are already logged in")
@@ -142,6 +144,7 @@ class loginpage(View):
      
 # logout button for the user
 class logoutpage(View):
+    '''logout button for the user'''
     def get(self, request):
         if request.user.is_authenticated:
             logout(request)

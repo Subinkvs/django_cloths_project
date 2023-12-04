@@ -55,7 +55,7 @@ $(document).ready(function () {
                                 data: data,
                                 success: function (responsec) {
                                     swal("Congratulations!",responsec.status, "success").then((value) => {
-                                        window.href.location = '/my-orders'
+                                        window.location.href = '/my-orders'
                                       });
                                     
                                 }

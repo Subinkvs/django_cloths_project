@@ -167,7 +167,7 @@ $(document).ready(function() {
 				{% csrf_token %}
 				<input type="hidden" value="{{ item.product.id }}" class="prod_id">
 			    <a href="{% url 'productdetail' item.product.id %}">
-                    <button type="button" class="btn btn-primary mr-5">View</button>
+                    <button type="button" class="btn btn-info mr-5">View</button>
                 </a>
 	</td>
 	<td> 
@@ -176,6 +176,13 @@ $(document).ready(function() {
 			
 		</div> <!-- price-wrap .// -->
 	</td>
+	<input type="hidden" value="{{ product.id }}" class="prod_id">
+	<input type="hidden" class="form-control qty-input" value="1" readonly style="background-color: white;">
+	<td class="text-right"> 
+		<button type="button" class="btn btn-primary addToCartBtn">Add to cart<i class="fas fa-shopping-cart px-2"></i></button>
+    </td>
+	
+
 	<td class="text-right"> 
 		<button type="button" class="btn btn-danger delete-wishlist-item">Remove</button>
     </td>
