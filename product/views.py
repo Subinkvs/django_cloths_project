@@ -357,8 +357,8 @@ class razorpaycheck(View):
 class order(View):
     '''To add order complete '''
     def get(self,request,*args, **kwargs):
-        orders = Order.objects.filter(user=request.user)
+        orders = Order.objects.filter(user=request.user)               
         context = {
-            'orders':orders
+            'orders':orders,
         }
-        return render(request,'order_complete.html', context)
+        return render(request,'order.html', context)

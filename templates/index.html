@@ -103,10 +103,12 @@
                       <div class="d-flex justify-content-end mb-3 mb-lg-0">
                          <div class="widget-header px-4">
                               {% if request.user.is_authenticated %}
-                              <small class="title text-muted ">Welcome{{request.user}}</small>
-                              <div>
-                                  <a href="{% url 'logoutpage' %}">Logout</a> <span class="dark-transp "></span>
-                              </div>
+                              <button class="title text-muted py-2 mt-2" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" style="background-color:white; border:none;">{{request.user}}</button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item" href="">Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'my-orders' %}">My Orders</a></li>
+                                <li><a class="dropdown-item" href="{% url 'logoutpage' %}">Logout</a></li> 
+                              </ul>
                               {% else %}
                               <!-- <small class="title text-muted ">Welcome</small> -->
                               <div class = "pt-3 ">
@@ -126,9 +128,13 @@
                       </a>
                        
                       </div> <!-- widgets-wrap.// -->
+                     
                   </div> <!-- col.// -->
+                 
               </div> <!-- row.// -->
+             
           </div> <!-- container.// -->
+          
       </section> <!-- header-main .// -->
   </header> <!-- section-header.// -->
   

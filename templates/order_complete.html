@@ -147,7 +147,7 @@ $(document).ready(function() {
     <h2 class="text-center">Payment Successful</h2>
 	<br>
 	<div class="text-center">
-		<a href="" class="btn btn-success">Shop more</a>
+		<a href="{% url 'index' %}" class="btn btn-success">Shop more</a>
 	</div>
 </div>
 
@@ -158,38 +158,46 @@ $(document).ready(function() {
             <div class="panel panel-default plain" id="dash_0">
                 <!-- Start .panel -->
                 <div class="panel-body p30">
+                   
                     <div class="row">
+                       
                         <!-- Start .row -->
                         <div class="col-lg-6">
+                            
                             <!-- col-lg-6 start here -->
                             <div class="invoice-logo"><img src="/images/logo.png" alt="Invoice logo" style="max-height: 40px;"></div>
                         </div>
                         <!-- col-lg-6 end here -->
+                      
                         <div class="col-lg-6">
                             <!-- col-lg-6 start here -->
+                           
                             <div class="invoice-from">
-                                <ul class="list-unstyled text-right">
-                                    <li><strong>Invoiced To</strong></li>
-                                    <li>Jakob Smith</li>
-                                    <li>Roupark 37</li>
-                                    <li>New York, NY, 2014</li>
-                                    <li>USA</li>
-                                </ul>
-                            </div>
+                              <ul class="list-unstyled text-right">
+                                <li><strong>Invoiced To</strong></li>
+                                {% for item in profile  %}
+                                <li>{{item.user}} </li>
+                                <li>{{item.address}}</li>
+                                <li>{{item.country}}</li>
+                                {% endfor %}
+                                
+                             
+                                 
+                              </ul>
+                               </div>
                         </div>
                         <!-- col-lg-6 end here -->
+                        
                         <div class="col-lg-12">
                             <!-- col-lg-12 start here -->
                             <div class="invoice-details mt25">
                                 
                                 <div class="well">
                                     <ul class="list-unstyled mb0">
-                                        {% for  item in orders %}
                                         <li><strong>Order</strong> #</li>
                                         <li><strong>Transaction</strong> #</li>
-                                        <li><strong>Order Date:</strong>{{item.created_at}}</li>
-                                        <li><strong>Status:</strong> {{item.status}}</li>
-                                        {% endfor %}
+                                        <li><strong>Order Date:</strong>{{orders.created_at}}</li>
+                                        <li><strong>Status:</strong> {{orders.status}}</li>
                                     </ul>
                                 </div>
                                
@@ -206,12 +214,14 @@ $(document).ready(function() {
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for item in cartitem  %}
                                             <tr>
-                                                <td>1024MB Cloud 2.0 Server - elisium.dynamic.com (12/04/2014 - 01/03/2015)</td>
-                                                <td class="text-center">1</td>
-                                                <td class="text-center">$25.00 USD</td>
+                                                <td>{{item.product.title}}</td>
+                                                <td class="text-center">{{item.product_qty}}</td>
+                                                <td class="text-center">Rs {{total_unit_price}}</td>
                                             </tr>
-                                            <tr>
+                                             {% endfor %}
+                                            <!-- <tr>
                                                 <td>Logo design</td>
                                                 <td class="text-center">1</td>
                                                 <td class="text-center">$200.00 USD</td>
@@ -220,7 +230,7 @@ $(document).ready(function() {
                                                 <td>Backup - 1024MB Cloud 2.0 Server - elisium.dynamic.com</td>
                                                 <td class="text-center">12</td>
                                                 <td class="text-center">$12.00 USD</td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -247,6 +257,7 @@ $(document).ready(function() {
                         <!-- col-lg-12 end here -->
                     </div>
                     <!-- End .row -->
+                 
                 </div>
             </div>
             <!-- End .panel -->
