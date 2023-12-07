@@ -362,3 +362,26 @@ class order(View):
             'orders':orders,
         }
         return render(request,'order.html', context)
+    
+# To view the order details
+class orderview(View):
+    def get(self,request,t_no,*args, **kwargs):
+        order = Order.objects.filter(tracking_no=t_no).filter(user=request.user.id).first()
+        orderitems = OrderItem.objects.filter(order=order)
+        context = {
+            'order':order,
+            'orderitems':orderitems
+        }
+        return render(request, 'orderview.html', context )
+    
+class profileview(View):
+    def get(self,request,*args, **kwargs):
+        profile = Profile.objects.filter(user=request.user).first()
+        orders = Order.objects.filter(user=request.user.id)
+        total_items = len(orders)
+        context = {
+            'profile': profile,
+            'orders':orders,
+            'total_items':total_items
+        }
+        return render(request, 'dashboard.html', context)

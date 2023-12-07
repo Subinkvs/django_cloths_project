@@ -20,6 +20,8 @@ urlpatterns = [
     path('place-order', placeorder.as_view(), name='placeorder'),
     path('proceed-to-pay',razorpaycheck.as_view() ),
     path('my-orders', order.as_view(), name='my-orders'),
+    path('order-view/<str:t_no>',orderview.as_view(), name='order-view'),
+    path('profile-view',profileview.as_view(), name='profile-view'),
     path('store', store.as_view(), name='store')
 
 ]
