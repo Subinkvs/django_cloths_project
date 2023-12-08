@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from accounts.forms import  CustomUserForm
 from django.contrib import messages
 from django.contrib.auth import  authenticate, login, logout, get_user_model
-from product.models import MenClothing,BannerImage,Cart
+from product.models import MenClothing,BannerImage,Cart,Wishlist
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -68,23 +68,26 @@ class activateEmail(View):
 class home(View):
     template_name = 'index.html'
     '''To render the landing page of the project '''
-    def get_context_data(self):
+    def get_context_data(self,request):
         prods = MenClothing.objects.filter(is_featured=True)
         bannerimage = BannerImage.objects.all()
         cartitem = Cart.objects.filter(user=self.request.user.id)
         total_quantity = sum(item.product_qty for item in cartitem)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
         
         context = {
             'prods': prods,
             'bannerimage': bannerimage,
             'cartitem': cartitem,
             'total_quantity': total_quantity,
+             'total_item':total_item
         }
 
         return context
 
     def get(self, request):
-        context = self.get_context_data()
+        context = self.get_context_data(request)
         return render(request, self.template_name, context)
 
     

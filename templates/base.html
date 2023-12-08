@@ -145,7 +145,7 @@ thead {
                               <button class="title text-muted py-2 mt-2" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" style="background-color:white; border:none;">{{request.user}}</button>
                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                 <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
-                                <li><a class="dropdown-item" href="">Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'profile-view' %}">Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'my-orders' %}">My Orders</a></li>
                                 <li><a class="dropdown-item" href="{% url 'logoutpage' %}">Logout</a></li> 
                               </ul>
@@ -164,7 +164,7 @@ thead {
                         </a>
                         <a href="{% url 'wishlist' %}" class="widget-header pl-3 ml-3">
                           <div class="icon icon-sm rounded-circle border"><i class="fa fa-heart"></i></div>
-                          <span class=""></span>
+                          <span class="badge badge-pill badge-danger notify">{{total_item}}</span>
                       </a>
                        
                       </div> <!-- widgets-wrap.// -->

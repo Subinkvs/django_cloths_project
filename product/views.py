@@ -15,17 +15,20 @@ import random
 class home(View):
     template_name = 'index.html'
     
-    def get_context_data(self):
+    def get_context_data(self,request):
         prods = MenClothing.objects.filter(is_featured=True)
         bannerimage = BannerImage.objects.all()
         cartitem = Cart.objects.filter(user=self.request.user.id)
         total_quantity = sum(item.product_qty for item in cartitem)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
         
         context = {
             'prods': prods,
             'bannerimage': bannerimage,
             'cartitem': cartitem,
             'total_quantity': total_quantity,
+            'total_item':total_item
             
         }
 
@@ -39,20 +42,23 @@ class home(View):
 class productdetail(View):
     template_name = 'product-detail.html'
     
-    def get_context_data(self, product_id):
+    def get_context_data(self,request, product_id):
         product = get_object_or_404(MenClothing, pk=product_id)
         cartitem = Cart.objects.filter(user=self.request.user.id)
         total_quantity = sum(item.product_qty for item in cartitem)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
         context = {
             'product': product,
             'cartitem': cartitem,
             'total_quantity': total_quantity,
+             'total_item': total_item
         }
 
         return context
 
     def get(self, request, product_id):
-        context = self.get_context_data(product_id)
+        context = self.get_context_data(request,product_id)
         return render(request, self.template_name, context)
 
 
@@ -379,9 +385,15 @@ class profileview(View):
         profile = Profile.objects.filter(user=request.user).first()
         orders = Order.objects.filter(user=request.user.id)
         total_items = len(orders)
+        cartitem = Cart.objects.filter(user=self.request.user.id)
+        total_quantity = sum(item.product_qty for item in cartitem)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
         context = {
             'profile': profile,
             'orders':orders,
-            'total_items':total_items
+            'total_items':total_items,
+            'total_quantity':total_quantity,
+            'total_item':total_item
         }
         return render(request, 'dashboard.html', context)

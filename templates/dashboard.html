@@ -12,31 +12,31 @@
 		<aside class="col-md-3">
 			<!--   SIDEBAR   -->
 			<ul class="list-group">
-				<a class="list-group-item active" href="#"> Dashbord </a>
+				<a class="list-group-item active" href="#">My Profile</a>
 				<a class="list-group-item" href="{% url 'my-orders' %}"> My Orders</a>
-				<!-- <a class="list-group-item" href="#"> Return and refunds </a>
-				<a class="list-group-item" href="#">Settings </a>
-				<a class="list-group-item" href="#"> My Selling Items </a>
-				<a class="list-group-item" href="#"> Received orders </a>  -->
+			    <a class="list-group-item" href="{% url 'cart' %}">My Cart</a>
+				<a class="list-group-item" href="{% url 'wishlist' %}">My Wishlist</a>
+			    <a class="list-group-item" href="{% url 'reset_password' %}"> Change Password </a>
+				<!-- <a class="list-group-item" href="#"> Received orders </a>   -->
 			</ul>
 			<br>
-			<a class="btn btn-light btn-block" href="#"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a> 
+			<a class="btn btn-light btn-block" href="{% url 'logoutpage' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a> 
 			<!--   SIDEBAR .//END   -->
 		</aside>
 		<main class="col-md-9">
 			<article class="card">
 			<header class="card-header">
 				<strong class="d-inline-block mr-3">Logged in as:</strong>
-				<span>{{request.user.first_name}} {{request.user.last_name}}</span>
+				<span>{{request.user}}</span>
 			</header>
 			<div class="card-body">
 				<div class="row"> 
 					<div class="col-md-8">
 						<h6 class="text-muted">Delivery to</h6>
 						<p>{{request.user.first_name}} {{request.user.last_name}}<br>  
-						Phone:{{request.user.phonenumber}} <br>
-						Email: {{request.user.email}} <br>
-						Location: {{profile.city}},{{profile.state}},{{profile.country}}<br> 
+						Phone:{{request.user.phonenumber}}<br>
+						Email:{{request.user.email}}<br>
+						Location:{{profile.city}}{{profile.state}}{{profile.country}}<br> 
 						Pin Code: {{profile.pincode}}
 						 </p>
 					</div>
@@ -49,6 +49,52 @@
 			</div> <!-- card-body .// -->
 			<br>
 			<div>
+				<div class="card-body">
+					<h4 class="card-title mb-4">Personal Details</h4>
+					<hr>
+					<form action="{% url 'placeorder' %}" method="POST">
+						{% csrf_token %}
+						 <div class="row">
+							 <div class="form-group col-sm-6">
+								 <label>First name</label>
+								 <input type="text" value="{{request.user.first_name}}" required class="form-control" name="firstname" placeholder="Enter first name">
+							 </div>
+							 <div class="form-group col-sm-6">
+								 <label>Last name</label>
+								 <input type="text" value="{{request.user.last_name}}" required  class="form-control"  name="lastname" placeholder="Enter Last name">
+							 </div>
+							 <div class="form-group col-sm-6">
+								 <label>Email</label>
+								 <input type="email" value="{{request.user.email}}" required class="form-control"   name="email" placeholder="example@gmail.com">
+							 </div>
+							 <div class="form-group col-sm-6">
+								 <label>Phone</label>
+								 <input type="text" value="{{request.user.phonenumber}}" required  class="form-control"  name="phone" placeholder="Enter phone number">
+							 </div>
+							 <!-- <div class="form-group col-12">
+								 <label>Address</label>
+								 <textarea type="text"required  class="form-control" required  name="address" placeholder="Enter address"  style="height: 100px;">{{userprofile.address}}</textarea>
+							 </div>
+							 <div class="form-group col-sm-6">
+								 <label>City</label>
+								 <input type="text" value="{{userprofile.city}}" required  class="form-control"  name="city" placeholder="Enter City name">
+							 </div>
+							 <div class="form-group col-sm-6">
+								 <label>State</label>
+								 <input type="text" value="{{userprofile.state}}" required  class="form-control"  name="state" placeholder="Enter State name">
+							 </div>
+							 <div class="form-group col-sm-6">
+								 <label>Country</label>
+								 <input type="text" value="{{userprofile.country}}" required  class="form-control"  name="country" placeholder="Enter Country name">
+							 </div>
+							 <div class="form-group col-sm-6">
+								 <label>Pin Code</label>
+								 <input type="text" value="{{userprofile.pincode}}" required  class="form-control"  name="pincode" placeholder="Enter Pin Code">
+							 </div> -->
+						 </div> <!-- row.// -->	
+				 </form>
+
+				</div>
 			        <div class="row pl-2 ">
 						<div class="col-md-8">
 							<h5>Total Orders</h5>

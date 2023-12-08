@@ -97,16 +97,19 @@ $(document).ready(function() {
 	</div> <!-- col.// -->
 	<div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
 				<div class="d-flex justify-content-end mb-3 mb-lg-0">
-					<div class="widget-header">
+					<div class="widget-header px-4">
 						{% if request.user.is_authenticated %}
-						<small class="title text-muted ">Welcome{{request.user}}</small>
-						<div>
-							<a href="{% url 'logoutpage' %}">Logout</a> <span class="dark-transp "></span>
-						</div>
+						<button class="title text-muted py-2 mt-2" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" style="background-color:white; border: 1px solid #ffffff !important;">{{request.user}}</button>
+						   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+							<li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
+							<li><a class="dropdown-item" href="{% url 'profile-view' %}">Profile</a></li>
+							<li><a class="dropdown-item" href="{% url 'my-orders' %}">My Orders</a></li>
+							<li><a class="dropdown-item" href="{% url 'logoutpage' %}">Logout</a></li> 
+						  </ul>
 						{% else %}
 						<!-- <small class="title text-muted ">Welcome</small> -->
 						<div class = "pt-3 ">
-							<a href="{% url 'loginpage' %}"> Login</a> <span class="dark-transp"></span>
+							<a href="./signin.html"> Login</a> <span class="dark-transp"></span>
 							<!-- <a href="./register.html"> Register</a> -->
 						</div>
 						{% endif %}
@@ -172,7 +175,7 @@ $(document).ready(function() {
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price">Rs {{item.product.price}}</var> 
+			<var class="price">Rs {{item.product.price|floatformat:"0"}}</var> 
 			
 		</div> <!-- price-wrap .// -->
 	</td>
@@ -213,6 +216,22 @@ $(document).ready(function() {
 </div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
+<!-- <script src="{% static '/js/jquery-3.7.1.min.js' %}"></script> -->
+<script src="{% static '/js/custom.js' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+    
+    
+    ('{% for msg in messages %}')
+    alertify.set('notifier', 'position', 'bottom-right');
+    alertify.success('<span style="color: green;">{{ msg }}</span>');
+    ('{% endfor %}')
+</script>
+<!-- Bootstrap JS with Popper.js and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <!-- jQuery for search product -->
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
@@ -234,18 +253,6 @@ function startAutocomplete(availableTags)
   });
 
 }
-
-</script>
-<!-- <script src="{% static '/js/jquery-3.7.1.min.js' %}"></script> -->
-<script src="{% static '/js/custom.js' %}"></script>
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-<script>
-    
-    
-    ('{% for msg in messages %}')
-    alertify.set('notifier', 'position', 'bottom-right');
-    alertify.success('<span style="color: green;">{{ msg }}</span>');
-    ('{% endfor %}')
-</script>
+</script> 
 </body>
 </html>
