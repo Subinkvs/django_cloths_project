@@ -98,28 +98,40 @@
                 </div> <!-- col.// -->
                 <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
                     <div class="d-flex justify-content-end mb-3 mb-lg-0">
-                        <div class="widget-header px-3">
+                        <div class="widget-header px-4">
                             {% if request.user.is_authenticated %}
-                              <small class="title text-muted ">Welcome{{request.user}}</small>
-                              <div>
-                                  <a href="{% url 'logoutpage' %}">Logout</a> <span class="dark-transp "></span>
-                              </div>
-                              {% else %}
-                              <!-- <small class="title text-muted ">Welcome</small> -->
-                              <div class = "pt-3 ">
-                                  <a href="./signin.html"> Login</a> <span class="dark-transp"></span>
-                                  <!-- <a href="./register.html"> Register</a> -->
-                              </div>
-                              {% endif %}
-                          </div>
+                            <button class="title text-muted py-2 mt-2" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" style="background-color:white; border:none;">{{request.user}}</button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                              <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
+                              <li><a class="dropdown-item" href="{% url 'profile-view' %}">Profile</a></li>
+                              <li><a class="dropdown-item" href="{% url 'my-orders' %}">My Orders</a></li>
+                              <li><a class="dropdown-item" href="{% url 'logoutpage' %}">Logout</a></li> 
+                            </ul>
+                            {% else %}
+                            <!-- <small class="title text-muted ">Welcome</small> -->
+                            <div class = "pt-3 ">
+                                <a href="./signin.html"> Login</a> <span class="dark-transp"></span>
+                                <!-- <a href="./register.html"> Register</a> -->
+                            </div>
+                            {% endif %}
+                        </div>
                         
-                          <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
+                        <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
                             <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+                            {% if total_quantity == 0 %}
+                              <span></span>
+                            {% else %}
                             <span class="badge badge-pill badge-danger notify">{{total_quantity}}</span>
-                        </a>
-                        <a href="{% url 'wishlist' %}" class="widget-header pl-3 ml-3">
-                          <div class="icon icon-sm rounded-circle border"><i class="fa fa-heart"></i></div>
-                      </a>
+                            {% endif %}
+                          </a>
+                          <a href="{% url 'wishlist' %}" class="widget-header pl-3 ml-3">
+                            <div class="icon icon-sm rounded-circle border"><i class="fa fa-heart"></i></div>
+                            {% if total_item == 0 %}
+                            <span ></span>
+                            {% else %}
+                            <span class="badge badge-pill notify" style="background-color: green; color: white;">{{total_item}}</span>
+                            {% endif %}
+                          </a>
                     </div> <!-- widgets-wrap.// -->
                 </div> <!-- col.// -->
             </div> <!-- row.// -->

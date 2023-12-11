@@ -40,9 +40,12 @@ jQuery(function(){
                 csrfmiddlewaretoken: token
             },
             success: function (response) {
+                // window.location.reload(true)
                 console.log(response)
                 alertify.success(response.status)
+               
             }
+            
         });
     });
     $('.addToWishlistBtn').on('click', function(e) { 
@@ -60,8 +63,10 @@ jQuery(function(){
                 csrfmiddlewaretoken: token
             },
             success: function (response) {
+                // window.location.reload(true)
                 console.log(response)
                 alertify.success(response.status)
+                
             }
         });
     });
@@ -81,9 +86,8 @@ jQuery(function(){
                 'product_qty':product_qty,
                 csrfmiddlewaretoken: token
             },
-            success: function (response) {
-                // console.log(response)
-                // alertify.success(response.status)
+            success: function () {
+                 window.location.reload()
             }
         });
     });

@@ -118,11 +118,20 @@ $(document).ready(function() {
 					</div>
 					<a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
 						<div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+						{% if total_quantity == 0 %}
+						  <span></span>
+						{% else %}
 						<span class="badge badge-pill badge-danger notify">{{total_quantity}}</span>
-					</a>
-					<a href="{% url 'wishlist' %}" class="widget-header pl-3 ml-3">
+						{% endif %}
+					  </a>
+					  <a href="{% url 'wishlist' %}" class="widget-header pl-3 ml-3">
 						<div class="icon icon-sm rounded-circle border"><i class="fa fa-heart"></i></div>
-					</a>
+						{% if total_item == 0 %}
+						<span ></span>
+						{% else %}
+						<span class="badge badge-pill notify" style="background-color: green; color: white;">{{total_item}}</span>
+						{% endif %}
+					  </a>
 				</div> <!-- widgets-wrap.// -->
 			</div> <!-- col.// -->
 </div> <!-- row.// -->

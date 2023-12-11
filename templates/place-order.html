@@ -115,11 +115,20 @@ $(document).ready(function() {
 					</div>
 					<a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
 						<div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+						{% if total_quantity == 0 %}
+						  <span></span>
+						{% else %}
 						<span class="badge badge-pill badge-danger notify">{{total_quantity}}</span>
-					</a>
-					<a href="{% url 'wishlist' %}" class="widget-header pl-3 ml-3">
+						{% endif %}
+					  </a>
+					  <a href="{% url 'wishlist' %}" class="widget-header pl-3 ml-3">
 						<div class="icon icon-sm rounded-circle border"><i class="fa fa-heart"></i></div>
-					</a>
+						{% if total_item == 0 %}
+						<span ></span>
+						{% else %}
+						<span class="badge badge-pill notify" style="background-color: green; color: white;">{{total_item}}</span>
+						{% endif %}
+					  </a>
 				</div> <!-- widgets-wrap.// -->
 			</div> <!-- col.// -->
 </div> <!-- row.// -->
@@ -212,31 +221,31 @@ $(document).ready(function() {
 <article class="accordion" id="accordion_pay">
 	<div class="card">
 		<header class="card-header">
-			<img src="{% static './images/misc/payment-paypal.png' %}" class="float-right" height="24"> 
+			<!-- <img src="{% static './images/misc/payment-paypal.png' %}" class="float-right" height="24">  -->
 			<label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
-				<input class="form-check-input" name="payment-option" checked type="radio" value="option2">
+				<!-- <input class="form-check-input" name="payment-option" checked type="radio" value="option2">
 				<h6 class="form-check-label"> 
 					Paypal 
-				</h6>
+				</h6> -->
 			</label>
 		</header>
 		<div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
 		<div class="card-body">
-			<p class="text-center text-muted">Connect your PayPal account and use it to pay your bills. You'll be redirected to PayPal to add your billing information.</p>
+			<p class="text-center text-muted">Connect to icart for a shopping experience meant for your fashion.</p>
 			<p class="text-center">
-				<a href="#"><img src="{% static './images/misc/btn-paypal.png' %}" height="32"></a>
+				<!-- <a href="#"><img src="{% static './images/misc/btn-paypal.png' %}" height="32"></a> -->
 				<br><br>
 			</p>
-		</div> <!-- card body .// -->
+		</div> 
 		</div> <!-- collapse .// -->
 	</div> <!-- card.// -->
 	<div class="card">
 	<header class="card-header">
-		<img src="{% static './images/misc/payment-card.png' %}" class="float-right" height="24">  
+		<!-- <img src="{% static './images/misc/payment-card.png' %}" class="float-right" height="24">  
 		<label class="form-check" data-toggle="collapse" data-target="#pay_payme">
 			<input class="form-check-input" name="payment-option" type="radio" value="option2">
 			<h6 class="form-check-label"> Credit Card  </h6>
-		</label>
+		</label> -->
 	</header>
 	<div id="pay_payme" class="collapse" data-parent="#accordion_pay">
 		<div class="card-body">
@@ -247,7 +256,7 @@ $(document).ready(function() {
 				<input type="number" maxlength="3" class="form-control mr-2"  style="width: 100px"  placeholder="cvc" name="">
 				<button class="btn btn btn-success">Button</button>
 			</form>
-		</div> <!-- card body .// -->
+		</div> 
 	</div> <!-- collapse .// -->
 	</div> <!-- card.// -->
 	

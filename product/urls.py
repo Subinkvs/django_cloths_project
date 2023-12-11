@@ -22,6 +22,7 @@ urlpatterns = [
     path('my-orders', order.as_view(), name='my-orders'),
     path('order-view/<str:t_no>',orderview.as_view(), name='order-view'),
     path('profile-view',profileview.as_view(), name='profile-view'),
+    path('orders/<int:order_id>/cancel/', ordercancel.as_view(), name='ordercancel'),
     path('store', store.as_view(), name='store')
 
 ]

@@ -65,7 +65,7 @@ class productdetail(View):
 # To get the category page separatly
 class CategoryView(View):
     template_name = 'category.html'
-    def get_context_data(self, category_name):
+    def get_context_data(self,request, category_name):
         predefined_categories = ['T-shirt','Shirt','Jacket','Jeans']
         if category_name:
             category_items = MenClothing.objects.filter(category__name__iexact=category_name, is_featured=True)
@@ -74,19 +74,22 @@ class CategoryView(View):
 
         cart_items = Cart.objects.filter(user=self.request.user.id)
         total_quantity = sum(item.product_qty for item in cart_items)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
 
         context = {
             'categories': predefined_categories,
             'category_name': category_name,
             'products': category_items,
             'total_quantity': total_quantity,
+            'total_item': total_item
         }
 
         return context
     '''To get the category page separatly'''
     
     def get(self, request, category_name=None):
-        context = self.get_context_data(category_name)
+        context = self.get_context_data(request,category_name)
         return render(request, self.template_name, context)
  
 # To add product to the cart
@@ -124,8 +127,10 @@ class cart(View):
             cartitem = Cart.objects.filter(user=request.user.id).order_by('-created_at')
             total_quantity = sum(item.product_qty for item in cartitem)
             total_price = sum(item.product.price * item.product_qty for item in cartitem)
+            wishlist = Wishlist.objects.filter(user=request.user.id)
+            total_item =len(wishlist)
 
-            context = {'cartitem': cartitem, 'total_quantity': total_quantity, 'total_price': total_price}
+            context = {'cartitem': cartitem, 'total_quantity': total_quantity, 'total_price': total_price,'total_item':total_item}
             return render(request, 'cart.html', context)
         else:
              return redirect('loginpage')
@@ -222,8 +227,10 @@ class checkoutpage(View):
         total_price = sum(item.product.price * item.product_qty for item in cartitems)
         
         userprofile = Profile.objects.filter(user=request.user).first()
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
 
-        context = {'cartitems': cartitems, 'total_price': total_price, 'total_quantity': total_quantity, 'userprofile': userprofile}
+        context = {'cartitems': cartitems, 'total_price': total_price, 'total_quantity': total_quantity, 'userprofile': userprofile, 'total_item':total_item}
         return render(request, 'place-order.html', context)
 
 
@@ -302,6 +309,8 @@ class store(View):
         prods = MenClothing.objects.filter(is_featured=True).order_by('image')
         cartitem = Cart.objects.filter(user=request.user.id)
         total_quantity = sum(item.product_qty for item in cartitem)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
         category = Category.objects.all()
         paginator = Paginator(prods, 3)
         page = request.GET.get('page')
@@ -313,7 +322,7 @@ class store(View):
         except EmptyPage:
             prods = paginator.page(paginator.num_pages)
         
-        context = {'prods': prods, 'page': page, 'category': category, 'total_quantity': total_quantity}
+        context = {'prods': prods, 'page': page, 'category': category, 'total_quantity': total_quantity,'total_item': total_item}
         return render(request, 'store.html', context)
  
   
@@ -363,9 +372,17 @@ class razorpaycheck(View):
 class order(View):
     '''To add order complete '''
     def get(self,request,*args, **kwargs):
-        orders = Order.objects.filter(user=request.user)               
+        orders = Order.objects.filter(user=request.user.id) 
+        total_items = len(orders)
+        cartitem = Cart.objects.filter(user=request.user.id)
+        total_quantity = sum(item.product_qty for item in cartitem)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)              
         context = {
             'orders':orders,
+            'total_item':total_item,
+            'total_quantity':total_quantity,
+            'total_items':total_items
         }
         return render(request,'order.html', context)
     
@@ -374,12 +391,19 @@ class orderview(View):
     def get(self,request,t_no,*args, **kwargs):
         order = Order.objects.filter(tracking_no=t_no).filter(user=request.user.id).first()
         orderitems = OrderItem.objects.filter(order=order)
+        cartitem = Cart.objects.filter(user=request.user.id)
+        total_quantity = sum(item.product_qty for item in cartitem)
+        wishlist = Wishlist.objects.filter(user=request.user.id)
+        total_item =len(wishlist)
         context = {
             'order':order,
-            'orderitems':orderitems
+            'orderitems':orderitems,
+            'total_item':total_item,
+            'total_quantity':total_quantity
         }
         return render(request, 'orderview.html', context )
-    
+ 
+# To view profile for the user   
 class profileview(View):
     def get(self,request,*args, **kwargs):
         profile = Profile.objects.filter(user=request.user).first()
@@ -397,3 +421,17 @@ class profileview(View):
             'total_item':total_item
         }
         return render(request, 'dashboard.html', context)
+    
+class ordercancel(View):
+    def post(self,request, order_id):
+        order = get_object_or_404(Order, id=order_id, user=request.user)
+        
+        if order.status:
+            order.status = 'Order Cancelled'
+            order.delete()
+            return JsonResponse({'status': 'Your Order Deleted Successfully'})
+        return JsonResponse({'status': 'Cancellation not allowed'})
+      
+        
+
+        
