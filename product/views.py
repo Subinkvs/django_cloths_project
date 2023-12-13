@@ -372,7 +372,8 @@ class razorpaycheck(View):
 class order(View):
     '''To add order complete '''
     def get(self,request,*args, **kwargs):
-        orders = Order.objects.filter(user=request.user.id) 
+        orders = Order.objects.filter(user=request.user.id
+                                      ) 
         total_items = len(orders)
         cartitem = Cart.objects.filter(user=request.user.id)
         total_quantity = sum(item.product_qty for item in cartitem)
@@ -422,6 +423,7 @@ class profileview(View):
         }
         return render(request, 'dashboard.html', context)
     
+# To cancel your order from my orders
 class ordercancel(View):
     def post(self,request, order_id):
         order = get_object_or_404(Order, id=order_id, user=request.user)

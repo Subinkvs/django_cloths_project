@@ -53,7 +53,7 @@
                                     <td>{{item.product.name}}</td>
                                     <td>{{item.quantity}}</td>
                                     <td>Rs {{item.price}}</td>
-                                    <td><img src="{{item.product.image.url}}" class="img-sm" alt="Product Image"></td>
+                                    <td><a href="{% url 'productdetail' item.product.id %}"><img src="{{item.product.image.url}}" class="img-sm" alt="Product Image"></a></td>
                                   </tr>
                                   {% endfor %}                          
                                 </tbody>

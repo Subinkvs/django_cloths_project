@@ -49,6 +49,8 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
 <!-- Default theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>  
     <style>
         .header-main {
           position: sticky;
@@ -57,7 +59,6 @@
           z-index: 1000;
         }
       </style>   
-    
 </head>
 <body>
     <header class="section-header">
@@ -263,6 +264,29 @@ function startAutocomplete(availableTags)
   });
 
 }
-</script> 
+</script>
+<!-- Elevatezoom image -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.rawgit.com/elevateweb/elevatezoom/master/jquery.elevatezoom.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#zoom").elevateZoom({
+            tint: true,
+            tintColour: '#333', // Color of the tint
+            tintOpacity: 0.5,   // Opacity of the tint
+            zoomType: "inner",
+            cursor: "crosshair",
+            responsive: true,
+            scrollZoom: true,   // Enable zooming via scroll
+            borderSize: 3,      // Size of the zoom border
+            easing: true,       // Enable easing for smoother zoom
+            zoomWindowHeight: 400, // Height of the zoom window
+            zoomWindowWidth: 400,  // Width of the zoom window
+            lensShape: "square",  // Shape of the lens
+        });
+    });
+</script>
 </body>
 </html>
